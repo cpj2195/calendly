@@ -1,0 +1,4 @@
+import os
+
+DYNAMO_USERS_TABLE = os.getenv("DYNAMO_USERS_TABLE")
+DYNAMO_REGION = os.getenv("DYNAMO_REGION")

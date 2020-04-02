@@ -74,6 +74,16 @@ class NotFoundError(BaseExceptionError):
             self.error_type = error_type
         super(self.__class__, self).__init__(message, error_type)
 
+class DynamoDBError(BaseExceptionError):
+    message = cnts.DYNAMO_DB_OP_ERR
+    error_type = cnts.err_DynamoDBError_code
+
+    def __init__(self, message=None, error_type=None):
+        if message:
+            self.message = message
+        if error_type:
+            self.error_type = error_type
+        super(self.__class__, self).__init__(message, error_type)
 
 class MethodNotDefined(BaseExceptionError):
     message = cnts.METHOD_NOT_FOUND
