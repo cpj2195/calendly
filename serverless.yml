@@ -1,0 +1,18 @@
+service: aws-python-sample
+
+provider:
+  name: aws
+  runtime: python3.6
+  environment:
+    DATABASE_NAME: some_name
+
+plugins:
+  - serverless-offline
+
+functions:
+  hello:
+    handler: calendly/events/service_router.main
+    events:
+      - http:
+          method: GET
+          path: /me

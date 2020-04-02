@@ -1,0 +1,25 @@
+{
+  "name": "calendly",
+  "version": "1.0.0",
+  "description": "For locally running APIs",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "serverless": "^1.45.1",
+    "serverless-offline": "^5.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "configure-me": "npm i",
+    "local": "serverless offline"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cpj2195/calendly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/cpj2195/calendly/blob/master/README.md"
+}
