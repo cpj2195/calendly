@@ -4,7 +4,7 @@ from calendly.resources import resource_constants
 from calendly.resources.users.user_resource import User
 
 RESOURCES = {
-    'me': User,}
+    'user': User,}
 
 
 def invoke_resource(resource_name, method_name, params):

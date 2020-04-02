@@ -4,7 +4,8 @@ provider:
   name: aws
   runtime: python3.6
   environment:
-    DATABASE_NAME: some_name
+    DYNAMO_USERS_TABLE: users
+    DYNAMO_REGION: us-west-2
 
 plugins:
   - serverless-offline
@@ -15,4 +16,7 @@ functions:
     events:
       - http:
           method: GET
-          path: /me
+          path: /user
+      - http:
+          method: POST
+          path: /user
