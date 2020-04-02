@@ -22,7 +22,6 @@ class User(BaseResource):
         if self.query_param:
             try:
                 email_id = self.query_param.get('email_id')
-                print(email_id)
                 if not resource_helpers.is_valid_email(email_id):
                     raise InvalidInputError("Invalid Email ID")
                 if not present_indb(email_id):

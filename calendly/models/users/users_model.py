@@ -25,4 +25,3 @@ class Users(PynamoBaseModel):
     created_ts = NumberAttribute(
         null=False, default=int(round(time.time() * 1000)),range_key=True)
     booked_slots = MapAttribute(default={},null=False)
-    

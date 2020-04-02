@@ -2,9 +2,11 @@ from calendly.common import logger
 from calendly.common.error_handler import ResourceNotFoundError
 from calendly.resources import resource_constants
 from calendly.resources.users.user_resource import User
+from calendly.resources.slots.slot_resource import Slot
 
 RESOURCES = {
-    'user': User,}
+    'user': User,
+    'slots': Slot}
 
 
 def invoke_resource(resource_name, method_name, params):

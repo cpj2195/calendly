@@ -38,6 +38,16 @@ class InvalidInputError(BaseExceptionError):
             self.error_type = error_type
         super(self.__class__, self).__init__(message, error_type)
 
+class PayloadValidationError(BaseExceptionError):
+    message = cnts.INVALID_PAYLOAD_PARAMETER
+    error_type = cnts.err_PayloadValidationError_code
+    
+    def __init__(self, message=None, error_type=None):
+        if message:
+            self.message = message
+        if error_type:
+            self.error_type = error_type
+        super(self.__class__, self).__init__(message, error_type)
 
 class EmptyPayloadError(BaseExceptionError):
     message = cnts.EMPTY_PAYLOAD

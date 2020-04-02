@@ -20,3 +20,9 @@ functions:
       - http:
           method: POST
           path: /user
+      - http:
+          method: PATCH
+          path: /slots
+      - http:
+          method: GET
+          path: /slots
