@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from builtins import object
 import os
 import time
+from builtins import object
 
-from pynamodb.attributes import (NumberAttribute,JSONAttribute,MapAttribute,
+from pynamodb.attributes import (JSONAttribute, MapAttribute, NumberAttribute,
                                  UnicodeAttribute)
 
 from calendly.models import db_constants as credentials

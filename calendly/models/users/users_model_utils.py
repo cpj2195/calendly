@@ -1,9 +1,11 @@
 import time
+
 from pynamodb.exceptions import GetError
 
-from calendly.models import db_helpers 
-from calendly.models.users.users_model import Users
 from calendly.common.error_handler import DynamoDBError
+from calendly.models import db_helpers
+from calendly.models.users.users_model import Users
+
 
 def create_user(email_id,booked_slots={}):
     """

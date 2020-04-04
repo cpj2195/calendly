@@ -1,9 +1,13 @@
 import ast
+
 from calendly.common.base_resource import BaseResource
-from calendly.common.error_handler import InvalidInputError, PayloadValidationError
+from calendly.common.error_handler import (InvalidInputError,
+                                           PayloadValidationError)
 from calendly.common.get_jwt import get_api_token
+from calendly.models.users.users_model_utils import create_user, present_indb
 from calendly.resources import resource_helpers
-from calendly.models.users.users_model_utils import create_user,present_indb
+
+
 class User(BaseResource):
     
     def get(self):

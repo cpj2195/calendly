@@ -1,11 +1,15 @@
-from calendly.models.users.users_model_utils import present_indb, get_booked_slots,create_user
-from calendly.models.users.users_model import Users
-from calendly.common.error_handler import InvalidInputError
-from calendly.models import db_helpers
 import datetime
 import re
-from datetime import date
 import time
+from datetime import date
+
+from calendly.common.error_handler import InvalidInputError
+from calendly.models import db_helpers
+from calendly.models.users.users_model import Users
+from calendly.models.users.users_model_utils import (create_user,
+                                                     get_booked_slots,
+                                                     present_indb)
+
 
 def update_slots(email_id,booked_slots,my_email):
     users_obj = Users.get(email_id)
