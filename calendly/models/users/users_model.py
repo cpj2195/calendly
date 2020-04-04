@@ -5,7 +5,7 @@ from builtins import object
 import os
 import time
 
-from pynamodb.attributes import (NumberAttribute,MapAttribute,
+from pynamodb.attributes import (NumberAttribute,JSONAttribute,MapAttribute,
                                  UnicodeAttribute)
 
 from calendly.models import db_constants as credentials
@@ -23,5 +23,12 @@ class Users(PynamoBaseModel):
 
     email_id = UnicodeAttribute(hash_key=True,null=False)
     created_ts = NumberAttribute(
-        null=False, default=int(round(time.time() * 1000)),range_key=True)
+        null=False, default=int(round(time.time() * 1000)))
     booked_slots = MapAttribute(default={},null=False)
+
+    def as_dict(self):
+        """
+        dict representation of Slots related info
+        """
+        return_Object = self.attribute_values
+        return_Object["booked_slots"] = self.booked_slots.as_dict()

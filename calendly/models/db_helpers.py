@@ -1,4 +1,5 @@
 from pynamodb.exceptions import PutError
+
 from calendly.common.error_handler import DynamoDBError
 
 

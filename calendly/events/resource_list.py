@@ -1,19 +1,20 @@
-from calendly.common import logger
-from calendly.common.error_handler import ResourceNotFoundError
+from calendly.common import get_jwt, logger
+from calendly.common.error_handler import (InternalServerError,
+                                           ResourceNotFoundError,
+                                           UnAuthorizedError)
 from calendly.resources import resource_constants
-from calendly.resources.users.user_resource import User
 from calendly.resources.slots.slot_resource import Slot
+from calendly.resources.users.user_resource import User
 
 RESOURCES = {
     'user': User,
     'slots': Slot}
 
 
-def invoke_resource(resource_name, method_name, params):
+def invoke_resource(resource_name, method_name, params,apitoken):
     '''
     This functions invokes the given method of given resource.
     While invoking, it also passes the parameters given.
-
     PARAMETERS
     -----------
     resource_name : str
@@ -36,7 +37,6 @@ def invoke_resource(resource_name, method_name, params):
         error_msg = resource_constants.RESOURCE_NOT_FOUND.format(resource_name)
         logger.log_to_cloudwatch('<ERROR>', error_msg)
         raise ResourceNotFoundError(error_msg)
-
     resource_object = resource_class()
     super(resource_class, resource_object).__init__(**params)
     try:
