@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: python3.6
   environment:
-    DYNAMO_USERS_TABLE: users
+    DYNAMO_USERS_TABLE: slots1
     DYNAMO_REGION: us-west-2
 
 plugins:
@@ -26,3 +26,6 @@ functions:
       - http:
           method: GET
           path: /slots
+      - http:
+          method: PUT
+          path: /user

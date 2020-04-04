@@ -5,7 +5,7 @@ from calendly.models import db_helpers
 from calendly.models.users.users_model import Users
 from calendly.common.error_handler import DynamoDBError
 
-def store_user_request(email_id):
+def create_user(email_id,booked_slots={}):
     """
     Creates an user request
 
@@ -14,7 +14,7 @@ def store_user_request(email_id):
     """
 
     created_ts = int(round(time.time() * 1000))
-    user_request = Users(email_id=email_id)
+    user_request = Users(email_id=email_id,booked_slots=booked_slots)
     db_helpers.save_dynamo_object(user_request)
 
 
@@ -27,21 +27,13 @@ def present_indb(email_id):
         else:
             return True
 
-def as_dict(user_query):
-    
-    return {
-        'email_id': user_query.email_id,
-        'created_ts': user_query.created_ts,
-        'booked_slots': user_query.booked_slots.as_dict()
-    }
-
-
-def get_booked_slots(email_id):
+def get_booked_slots(email_id,my_email):
     try:
-        booked_slots = Users.query(email_id)
+        slot_row = Users.get(email_id)
     except GetError:
         raise DynamoDBError("No Such Email Address Found")
-    for entry in booked_slots:
-        result = as_dict(entry).get('booked_slots')
+    result = {}
+    all_slots = slot_row.booked_slots.as_dict()
+    if my_email in all_slots:
+        result = slot_row.booked_slots.as_dict().get(my_email)
     return result
-    

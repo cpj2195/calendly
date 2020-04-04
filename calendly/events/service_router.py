@@ -1,16 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import json
 import ast
+import json
+import os
+
+import jwt
+
+from calendly.common.get_jwt import decode_jwt_token
 from calendly.common.logger import log_to_cloudwatch
 from calendly.events.resource_list import invoke_resource
 
 
 def respond(err, res=None):
     '''
-    To prepare the response payload with the  headers required for the
-    cross origin access of the lambda functions through the api gateway.
+    To prepare the response payload through the api gateway.
 
     PARAMETERS
     -------------
@@ -65,8 +68,22 @@ def main(event, context):
     resource_name = resource(event)
     method_name = http_method(event)
     params = parameters(event)
+    api_token = get_api_token(event)
+    if(resource_name=='user' and method_name == "POST"):
+        api_token = None
+        # For local Development
+        email_id = None
+        if "email_id" in os.environ:
+            email_id = os.getenv("email_id")
+        params["email_id"] = email_id
+    elif api_token is None:
+        res_msg = {"message":"Unauthorized to use Calendly"}
+        response_obj = {
+        'statusCode': "401",
+        'body': json.dumps(res_msg)}    
+        return response_obj 
     try:
-        result = invoke_resource(resource_name, method_name, params)
+        result = invoke_resource(resource_name, method_name, params,api_token)
         error_obj = None
         response_obj = get_response_obj(error_obj, result)
 
@@ -75,6 +92,14 @@ def main(event, context):
         result = None
         response_obj = get_response_obj(error_obj, result)
     return response_obj
+
+
+def get_api_token(event):
+    APITOKEN = "apitoken"
+    HEADERS = "headers"
+    apitoken = event.get(HEADERS).get(APITOKEN)
+    return apitoken
+
 
 
 def get_response_obj(error_obj, result):
@@ -86,7 +111,7 @@ def get_response_obj(error_obj, result):
     PARAMETERS
     ----------
     error_obj : Python Object
-        Object which is None in if the request is successfull or 
+        Object which is None in if the request is successfull 
     result : dict | str | int:
         result after invoking the  resource
 

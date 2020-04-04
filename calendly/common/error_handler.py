@@ -3,6 +3,7 @@
 
 from calendly.common import error_codes as cnts
 
+
 class BaseExceptionError(Exception):
     status_code = 500
     message = cnts.BASE_ERROR
@@ -72,6 +73,18 @@ class ResourceNotFoundError(BaseExceptionError):
             self.error_type = error_type
         super(self.__class__, self).__init__(message, error_type, self.__class__.status_code)
 
+class UnAuthorizedError(BaseExceptionError):
+    message = cnts.UnauthenticatedUser
+    status_code = 401
+    error_type = cnts.err_UnauthenticatedError_code
+
+    def __init__(self, message=None,error_type=None):
+        if message:
+            self.message = message
+        if error_type:
+            self.error_type = error_type 
+        super(self.__class__, self).__init__(message,error_type, status_code=self.__class__.status_code)
+
 
 class NotFoundError(BaseExceptionError):
     message = cnts.NOT_FOUND
@@ -116,3 +129,14 @@ class InternalServerError(BaseExceptionError):
         if error_type:
             self.error_type =  error_type
         super(self.__class__, self).__init__(message, error_type)
+
+class AccessDeniedError(BaseExceptionError):
+    message = cnts.UnAuthtorizedUser
+    status_code = 403
+    error_type = cnts.err_UnAuthtorizedUser
+    def __init__(self, message=None, error_type=None):
+        if message:
+            self.message = message
+        if error_type:
+            self.error_type =  error_type
+        super(self.__class__, self).__init__(message, error_type, self.__class__.status_code)
