@@ -12,13 +12,11 @@ class Slot(BaseResource):
         """
         #Case1 : When the user wants to view slots for another person.
         if self.query_param:
-            #TODO get from apitoken
-            my_email = "ankit@gmail.com"
             try:
                 email_id = self.query_param.get('email_id')
                 if not email_id:
                     raise PayloadValidationError("No email_id mentioned")
-                result = users_model_utils.get_booked_slots(email_id,my_email,'get')  
+                result = users_model_utils.get_booked_slots(self.my_email_id,email_id,'get')  
             except ValueError:
                 raise InvalidInputError("Invalid Query Paramter mentioned")
             return result
@@ -47,15 +45,11 @@ class Slot(BaseResource):
         result = {}
         #Case1 : When the user wants to book a slot with some other person
         if state == 'book' and email_id is not None:
-            #TODO: get from apitoken
-            my_email = "niteshkalra6453@gmail.com"
-            if book_slot(my_email,email_id,date,from_time,to_time,subject):
+            if book_slot(self.my_email_id,email_id,date,from_time,to_time,subject):
                 result["status"] = "booked"
 
         #Case2 : When the user wants to delete an upcoming slot with another user
         if state=="free" and email_id is not None:
-            #TODO: get from apitoken
-            my_email = "ankitgmail.com"
-            if free_slot(my_email,email_id,date,from_time,to_time,subject):
+            if free_slot(self.my_email_id,email_id,date,from_time,to_time,subject):
                 result["status"] = "Slot Cancelled"
         return result

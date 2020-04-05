@@ -3,7 +3,7 @@ from builtins import object
 
 class BaseResource(object):
 
-    def __init__(self, query_param=None, path_param=None, body_payload=None,email_id=None):
+    def __init__(self, query_param=None, path_param=None, body_payload=None,my_email_id=None):
         '''
         This constructor is used to pass parameters and payload of request
         to the resource
@@ -25,7 +25,7 @@ class BaseResource(object):
         self.query_param = query_param
         self.path_param = path_param
         self.body_payload = body_payload
-        self.email_id = email_id
+        self.my_email_id = my_email_id
 
     def get(self):
         pass

@@ -12,8 +12,18 @@ def get_api_token(payload):
 
 
 def decode_jwt_token(params,apitoken):
-    try:
-        payload = jwt.decode(apitoken, secret_key, algorithms=['HS256'])
-    except Exception as e:
-        raise AccessDeniedError(str(e))
-    return payload
+    if apitoken:
+        try:
+            payload = jwt.decode(apitoken, secret_key, algorithms=['HS256'])
+        except jwt.exceptions.InvalidTokenError as err:
+            raise AccessDeniedError(str(err))
+        except jwt.exceptions.DecodeError as err:
+            raise AccessDeniedError(err)
+        except jwt.exceptions.InvalidSignatureError as err:
+            raise AccessDeniedError(err)
+        except jwt.exceptions.ExpiredSignatureError as err:
+            raise AccessDeniedError(str(err))
+        except jwt.exceptions.InvalidAlgorithmError as err:
+            raise AccessDeniedError(str(err))
+        params["my_email_id"] = payload.get("my_email_id")
+        return params

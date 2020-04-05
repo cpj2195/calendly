@@ -72,22 +72,30 @@ def main(event, context):
     if(resource_name=='user' and method_name == "POST"):
         api_token = None
         # For local Development
-        email_id = None
-        if "email_id" in os.environ:
-            email_id = os.getenv("email_id")
-        params["email_id"] = email_id
+        my_email_id = None
+        if "MY_EMAIL_ID" in os.environ:
+            my_email_id = os.getenv("MY_EMAIL_ID")
+        params["my_email_id"] = my_email_id
     elif api_token is None:
         res_msg = {"message":"Unauthorized to use Calendly"}
         response_obj = {
         'statusCode': "401",
         'body': json.dumps(res_msg)}    
-        return response_obj 
+        return response_obj
     try:
+        params = decode_jwt_token(params,api_token)
         result = invoke_resource(resource_name, method_name, params,api_token)
         error_obj = None
         response_obj = get_response_obj(error_obj, result)
 
     except Exception as error_obj:
+        print(error_obj)
+        print(error_obj.status_code)
+        print(error_obj.message)
+        print(error_obj.payload)
+        print(type(error_obj))
+        print(error_obj.args)
+        print(dir(error_obj))
         log_to_cloudwatch("ERROR:", error_obj)
         result = None
         response_obj = get_response_obj(error_obj, result)

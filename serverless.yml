@@ -15,9 +15,6 @@ functions:
     handler: calendly/events/service_router.main
     events:
       - http:
-          method: GET
-          path: /user
-      - http:
           method: POST
           path: /user
       - http:
@@ -26,6 +23,3 @@ functions:
       - http:
           method: GET
           path: /slots
-      - http:
-          method: PUT
-          path: /user
