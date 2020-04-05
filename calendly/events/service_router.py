@@ -89,13 +89,6 @@ def main(event, context):
         response_obj = get_response_obj(error_obj, result)
 
     except Exception as error_obj:
-        print(error_obj)
-        print(error_obj.status_code)
-        print(error_obj.message)
-        print(error_obj.payload)
-        print(type(error_obj))
-        print(error_obj.args)
-        print(dir(error_obj))
         log_to_cloudwatch("ERROR:", error_obj)
         result = None
         response_obj = get_response_obj(error_obj, result)
