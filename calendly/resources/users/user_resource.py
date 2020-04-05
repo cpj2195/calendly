@@ -26,11 +26,11 @@ class User(BaseResource):
         if not email_id:
             raise PayloadValidationError("Invalid key mentioned")
         if not resource_helpers.is_valid_email(email_id):
-            raise InvalidInputError("Invalid Email ID")
+            raise InvalidInputError(cnsts.INVALID_EMAIL_ID_PROVIDED)
         if not present_indb(email_id):
             create_user(email_id)
         payload = {cnsts.MY_EMAIL_ID:email_id}
-        result = {"apitoken":get_api_token(payload)}
+        result = {cnsts.APITOKEN:get_api_token(payload)}
         return result
 
     def patch(self):

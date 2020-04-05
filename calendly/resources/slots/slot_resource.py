@@ -3,7 +3,7 @@ from calendly.common.error_handler import InvalidInputError,PayloadValidationErr
 from calendly.resources import resource_helpers
 from calendly.models.users import users_model_utils
 from calendly.resources.slots.slot_resource_utils import book_slot,date_valid,time_valid,free_slot
-
+import calendly.resources.resource_constants as cnsts
 class Slot(BaseResource):
     
     def get(self):
@@ -41,7 +41,7 @@ class Slot(BaseResource):
         booking_today  = date_valid(date)
         time_valid(from_time,to_time,booking_today)
         if not resource_helpers.is_valid_email(email_id):
-            raise InvalidInputError("Given Email Address is Invalid")
+            raise InvalidInputError(cnsts.INVALID_EMAIL_ID_PROVIDED)
         result = {}
         #Case1 : When the user wants to book a slot with some other person
         if state == 'book' and email_id is not None:
