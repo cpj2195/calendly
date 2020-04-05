@@ -26,4 +26,6 @@ def decode_jwt_token(params,apitoken):
         except jwt.exceptions.InvalidAlgorithmError as err:
             raise AccessDeniedError(str(err))
         params["my_email_id"] = payload.get("my_email_id")
-        return params
+    else:
+        params["my_email_id"] = params.get('body_payload').get('my_email_id')
+    return params
