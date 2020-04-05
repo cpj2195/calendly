@@ -52,6 +52,9 @@ def date_valid(input_date):
 def time_valid(from_time,to_time,booking_today=False):
     timeformat = "%H:%M"
     time_now = datetime.datetime.now()
+    pattern = re.compile(r"^[0-9]{2}:[0-9]{2}$")
+    if not pattern.match(from_time) or not(pattern.match(to_time)):
+      raise InvalidInputError("from_time and to_time should be in HH:MM format")
     try:
         valid_fromtime = datetime.datetime.strptime(from_time, timeformat)
     except ValueError as err:
