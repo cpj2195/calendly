@@ -2,7 +2,7 @@ import ast
 
 from calendly.common.base_resource import BaseResource
 from calendly.common.error_handler import (InvalidInputError,
-                                           PayloadValidationError)
+                                           PayloadValidationError,MethodNotDefined)
 from calendly.common.get_jwt import get_api_token
 from calendly.models.users.users_model_utils import create_user, present_indb
 from calendly.resources import resource_helpers
@@ -10,6 +10,12 @@ from calendly.resources import resource_helpers
 
 class User(BaseResource):
        
+    def get():
+        """
+        Not allowed for this resource.
+        """
+        raise MethodNotDefined()
+
     def post(self):
         """
         Method to register a user to use calendly API's and return an API token
@@ -24,5 +30,17 @@ class User(BaseResource):
         if not present_indb(email_id):
             create_user(email_id)
         payload = {"my_email_id":email_id}
-        result = {"apiToken":get_api_token(payload)}
+        result = {"apitoken":get_api_token(payload)}
         return result
+
+    def patch(self):
+        """
+        Not allowed for this resource.
+        """
+        raise MethodNotDefined()
+    
+    def put(self):
+        """
+        Not allowed for this resource.
+        """
+        raise MethodNotDefined()
