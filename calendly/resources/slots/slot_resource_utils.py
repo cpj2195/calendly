@@ -62,6 +62,8 @@ def time_valid(from_time,to_time,booking_today=False):
         raise InvalidInputError("Requested to_time is not in the right format")
     if booking_today and (time_now.hour>valid_fromtime.hour):
         raise InvalidInputError("Requested to_time today is not possible")
+    elif ((valid_totime.hour<valid_fromtime.hour)):
+        raise InvalidInputError("Booking an invalid timeslot or booking is being made accross 2 dates")
 
 def book_slot(my_email,email_id,date,from_time,to_time,subject=None):
     if present_indb(email_id):
