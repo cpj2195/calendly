@@ -71,11 +71,6 @@ def main(event, context):
     api_token = get_api_token(event)
     if(resource_name=='user' and method_name == "POST"):
         api_token = None
-        # For local Development
-        my_email_id = None
-        if "MY_EMAIL_ID" in os.environ:
-            my_email_id = os.getenv("MY_EMAIL_ID")
-        params["my_email_id"] = my_email_id
     elif api_token is None:
         res_msg = {"message":"Unauthorized to use Calendly"}
         response_obj = {
