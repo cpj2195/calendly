@@ -2,7 +2,7 @@ import time
 
 from pynamodb.exceptions import GetError
 
-from calendly.common.error_handler import DynamoDBError
+from calendly.common.error_handler import DynamoDBError,InvalidInputError
 from calendly.models import db_helpers
 from calendly.models.users.users_model import Users
 
@@ -29,13 +29,15 @@ def present_indb(email_id):
         else:
             return True
 
-def get_booked_slots(email_id,my_email):
+def get_booked_slots(email_id,my_email,state='book'):
     try:
         slot_row = Users.get(email_id)
-    except GetError:
+    except:
         raise DynamoDBError("No Such Email Address Found")
     result = {}
     all_slots = slot_row.booked_slots.as_dict()
     if my_email in all_slots:
         result = slot_row.booked_slots.as_dict().get(my_email)
+    elif(my_email not in all_slots and (state in ['get','free'])):
+        raise InvalidInputError("You dont have any slots booked with the mentioned user")
     return result

@@ -11,6 +11,7 @@ from calendly.models.users.users_model_utils import (create_user,
                                                      present_indb)
 
 
+
 def update_slots(email_id,booked_slots,my_email):
     users_obj = Users.get(email_id)
     all_slots = users_obj.booked_slots.as_dict()
@@ -24,7 +25,7 @@ def update_slots(email_id,booked_slots,my_email):
         users_obj = Users(email_id=email_id,booked_slots=calender)
     db_helpers.save_dynamo_object(users_obj)
 
-def create_slot_json(date,from_time,to_time,subject=None):
+def create_slot_json(from_time,to_time,subject=None):
     slot_obj = {}
     slot_obj["from_time"] = from_time
     slot_obj["to_time"] = to_time
@@ -64,8 +65,8 @@ def time_valid(from_time,to_time,booking_today=False):
 
 def book_slot(my_email,email_id,date,from_time,to_time,subject=None):
     if present_indb(email_id):
-        booked_slots = get_booked_slots(email_id,my_email)
-        to_book_slot = create_slot_json(date,from_time,to_time,subject)
+        booked_slots = get_booked_slots(email_id,my_email,'book')
+        to_book_slot = create_slot_json(from_time,to_time,subject)
         if date not in booked_slots:
             booked_slots[date] = []
         booked_slots[date].append(to_book_slot)
@@ -73,3 +74,20 @@ def book_slot(my_email,email_id,date,from_time,to_time,subject=None):
     else :
         raise InvalidInputError("Requested EmailID Is does not exist")
     return True
+
+
+def free_slot(my_email,email_id,date,from_time,to_time,subject=None):
+    if present_indb(email_id):
+        booked_slots = get_booked_slots(email_id,my_email,'free')
+        all_events_day = booked_slots.get(date)
+        if(not all_events_day):
+            raise InvalidInputError("You dont have any booked meetings on that day")
+        else:
+            to_free_slot = create_slot_json(from_time,to_time,subject)
+            all_events_day = list(filter(lambda a: a != to_free_slot, all_events_day))
+            users_obj = Users.get(email_id)
+            users_obj.booked_slots.as_dict().get(my_email).update({date:all_events_day})
+            db_helpers.save_dynamo_object(users_obj)
+            return True
+    else:
+        raise InvalidInputError("You dont have any meeting scheduled with the User")

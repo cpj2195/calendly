@@ -1,8 +1,8 @@
 from calendly.common.base_resource import BaseResource
-from calendly.common.error_handler import InvalidInputError,PayloadValidationError
+from calendly.common.error_handler import InvalidInputError,PayloadValidationError,InvalidInputError
 from calendly.resources import resource_helpers
 from calendly.models.users import users_model_utils
-from calendly.resources.slots.slot_resource_utils import book_slot,date_valid,time_valid
+from calendly.resources.slots.slot_resource_utils import book_slot,date_valid,time_valid,free_slot
 
 class Slot(BaseResource):
     
@@ -10,17 +10,20 @@ class Slot(BaseResource):
         """
         Returns information about the booked slots for the user 
         """
-        #Case1 : When the user request booked slots for another user for the coming week.
+        #Case1 : When the user wants to view slots for another person.
         if self.query_param:
+            #TODO get from apitoken
+            my_email = "ankit@gmail.com"
             try:
                 email_id = self.query_param.get('email_id')
+                if not email_id:
+                    raise PayloadValidationError("No email_id mentioned")
+                result = users_model_utils.get_booked_slots(email_id,my_email,'get')  
             except ValueError:
                 raise InvalidInputError("Invalid Query Paramter mentioned")
-            result = users_model_utils.get_booked_slots(email_id)  
             return result
-        #Case2 : When the user wants to view his own booked slots for the coming week
         else:
-            pass
+            raise InvalidInputError("No Query Parameters mentioned")
 
     def patch(self):
         email_id = self.body_payload.get('email_id')
@@ -45,11 +48,14 @@ class Slot(BaseResource):
         #Case1 : When the user wants to book a slot with some other person
         if state == 'book' and email_id is not None:
             #TODO: get from apitoken
-            my_email = "ankit999999999999@gmail.com"
+            my_email = "niteshkalra6453@gmail.com"
             if book_slot(my_email,email_id,date,from_time,to_time,subject):
                 result["status"] = "booked"
 
         #Case2 : When the user wants to delete an upcoming slot with another user
         if state=="free" and email_id is not None:
-            pass
+            #TODO: get from apitoken
+            my_email = "ankitgmail.com"
+            if free_slot(my_email,email_id,date,from_time,to_time,subject):
+                result["status"] = "Slot Cancelled"
         return result
