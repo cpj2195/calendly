@@ -1,5 +1,5 @@
 from calendly.common.base_resource import BaseResource
-from calendly.common.error_handler import InvalidInputError,PayloadValidationError,InvalidInputError
+from calendly.common.error_handler import InvalidInputError,PayloadValidationError,InvalidInputError,MethodNotDefined
 from calendly.resources import resource_helpers
 from calendly.models.users import users_model_utils
 from calendly.resources.slots.slot_resource_utils import book_slot,date_valid,time_valid,free_slot
@@ -24,6 +24,10 @@ class Slot(BaseResource):
             raise InvalidInputError("No Query Parameters mentioned")
 
     def patch(self):
+        """
+        Returns reponse when the user wants to book/free a slot with another 
+        already present user
+        """
         email_id = self.body_payload.get('email_id')
         date = self.body_payload.get('date')
         from_time = self.body_payload.get('from_time')
@@ -55,3 +59,15 @@ class Slot(BaseResource):
             if free_slot(self.my_email_id,email_id,date,from_time,to_time,subject):
                 result["status"] = "Slot Cancelled"
         return result
+    
+    def post(self):
+        """
+        Not allowed for this resource.
+        """
+        raise MethodNotDefined()
+
+    def put(self):
+        """
+        Not allowed for this resource.
+        """
+        raise MethodNotDefined()

@@ -28,7 +28,7 @@ class Users(PynamoBaseModel):
 
     def as_dict(self):
         """
-        dict representation of Slots related info
+        dict representation of user related info
         """
         return_Object = self.attribute_values
         return_Object["booked_slots"] = self.booked_slots.as_dict()

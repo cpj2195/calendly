@@ -21,6 +21,9 @@ class BaseResource(object):
             This dictionary contains the body content (payload) sent
             with the request through the api gateway. It is None in case
             of GET request.
+        my_email_id: str
+            The email id of the API user or the end user consuming the API's
+            
         '''
         self.query_param = query_param
         self.path_param = path_param

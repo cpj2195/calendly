@@ -91,6 +91,23 @@ def main(event, context):
 
 
 def get_api_token(event):
+    '''
+    This function returns the apitoken passed in the header 
+    of the API request.
+
+    PARAMETERS
+    ----------
+    event : dict
+        Object that contains all the parameters passed while invoking
+        the lambda function
+
+    RETURNS
+    -------
+    str:
+        JWT token value
+
+    '''
+
     APITOKEN = "apitoken"
     HEADERS = "headers"
     apitoken = event.get(HEADERS).get(APITOKEN)
