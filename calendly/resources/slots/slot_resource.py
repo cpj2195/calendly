@@ -30,6 +30,8 @@ class Slot(BaseResource):
         to_time = self.body_payload.get('to_time')
         subject = self.body_payload.get('subject')
         state = self.body_payload.get('state')
+        if not email_id:
+            raise PayloadValidationError("email_id not mentioned in the payload")
         if not date:
             raise PayloadValidationError("Date not mentioned in the payload")
         if not from_time:
