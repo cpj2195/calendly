@@ -9,3 +9,4 @@ METHODS = {
 }
 
 RESOURCE_NOT_FOUND = '{} Not Found'
+MY_EMAIL_ID = "my_email_id"

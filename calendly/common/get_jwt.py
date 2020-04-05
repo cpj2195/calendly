@@ -3,6 +3,7 @@ import jwt
 from calendly.common import logger
 from calendly.common.error_handler import (AccessDeniedError,
                                            InternalServerError)
+import calendly.resources.resource_constants as cnts
 
 secret_key = "1476f4cfa96f20af2ca8cfdf9c5920f54d78f1b835318d729ceec2a72403cc29"
 
@@ -25,7 +26,7 @@ def decode_jwt_token(params,apitoken):
             raise AccessDeniedError(str(err))
         except jwt.exceptions.InvalidAlgorithmError as err:
             raise AccessDeniedError(str(err))
-        params["my_email_id"] = payload.get("my_email_id")
+        params[cnts.MY_EMAIL_ID] = payload.get(cnts.MY_EMAIL_ID)
     else:
-        params["my_email_id"] = params.get('body_payload').get('my_email_id')
+        params[cnts.MY_EMAIL_ID] = params.get('body_payload').get(cnts.MY_EMAIL_ID)
     return params
