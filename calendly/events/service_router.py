@@ -25,15 +25,21 @@ def respond(err, res=None):
     body = {}
     if err:
         try:
-            body["message"] = err.args[0].message
-            body["type"] = err.args[0].error_type
+            body["message"] = err.args[0].message if err.args else err.message
+            body["type"] = err.args[0].error_type if err.args else err.error_type
         except:
             body["message"] = str(err)
             body["type"] = "None"
     else:
         body = res
+    if err.args:
+        statuscode = str(err.args[0].status_code)
+    elif err.status_code:
+        statuscode = str(err.status_code)
+    else:
+        statuscode = '200'
     response_obj = {
-        'statusCode': err.args[0].status_code if err else '200',
+        'statusCode': statuscode,
         'body': json.dumps(body)
     }
     return response_obj
